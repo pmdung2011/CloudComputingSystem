@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sitecatalog xmlns="http://pegasus.isi.edu/schema/sitecatalog" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://pegasus.isi.edu/schema/sitecatalog http://pegasus.isi.edu/schema/sc-3.0.xsd" version="3.0">
+    <site handle="condorpool" arch="x86_64" os="LINUX">
+        
+        <head-fs>
+            <scratch />
+            <storage />
+        </head-fs>
+        <replica-catalog  type="LRC" url="rlsn://dummyValue.url.edu" />
+        <profile namespace="pegasus" key="style" >condor</profile>
+        <profile namespace="condor" key="universe" >vanilla</profile>
+        <profile namespace="env" key="PEGASUS_HOME" >/usr</profile>
+	
+	<!-- The requirements expression allows you to limit where your jobs go -->
+  
+
+  <!-- The following two profiles forces Condor to always transfer files. This
+       has to be used if the pool does not have a shared filesystem -->
+  	<profile namespace="condor" key="should_transfer_files">True</profile>
+	<profile namespace="condor" key="transfer_output">True</profile>
+
+  	<profile namespace="condor" key="when_to_transfer_output">ON_EXIT</profile>
+	<profile namespace="condor" key="requirements">(Arch==Arch)&amp;&amp;(Disk!=0)&amp;&amp;(Memory!=0)&amp;&amp;(OpSys==OpSys)&amp;&amp;(FileSystemDomain!="")</profile>
+
+
+    </site>
+    <site handle="local" arch="x86_64" os="LINUX">
+        <grid type="gt2" contact="localhost/jobmanager-fork" scheduler="Fork" jobtype="auxillary"/>
+        <head-fs>
+            <scratch>
+                <shared>
+                    <file-server protocol="file" url="file://" mount-point="/home/pega/walkthrough/work"/>
+                    <internal-mount-point mount-point="/home/pega/walkthrough/work"/>
+                </shared>
+            </scratch>
+            <storage>
+                <shared>
+                    <file-server protocol="file" url="file://" mount-point="/home/pega/walkthrough/storage"/>
+                    <internal-mount-point mount-point="/home/pega/walkthrough/storage"/>
+                </shared>
+            </storage>
+        </head-fs>
+        <replica-catalog  type="LRC" url="rlsn://dummyValue.url.edu" />
+        <profile namespace="env" key="PEGASUS_HOME" >/usr</profile>
+        <profile namespace="env" key="GLOBUS_LOCATION" >/usr/local/globus-5.2.0</profile>
+    </site>
+</sitecatalog>
+
